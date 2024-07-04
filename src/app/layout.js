@@ -1,5 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
+import { Suspense } from "react";
+import Loading from "./loading";
+import { Toaster } from "react-hot-toast";
+import { UserContextProvider } from "@/userContext/Usercontext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +16,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <UserContextProvider>
+          <Header />
+          <div>
+            <Suspense fallback={<Loading />}>
+              {children}
+              <Toaster />
+            </Suspense>
+          </div>
+        </UserContextProvider>
+      </body>
     </html>
   );
 }
